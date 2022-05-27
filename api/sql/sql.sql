@@ -4,6 +4,7 @@ create user 'golang'@'localhost' IDENTIFIELD by 'golang';
 
 grant all privileges on redesocialgo.* to 'golang'@'localhost';
 
+DROP TABLE publicacoes;
 DROP TABLE seguidores;
 DROP TABLE usuarios;
 
@@ -24,4 +25,12 @@ CREATE TABLE seguidores(
     FOREIGN KEY (seguidor_id) REFERENCES usuarios(id) ON DELETE CASCADE 
 );
 
-
+CREATE TABLE publicacoes(
+    id int auto_increment primary key,
+    titulo varchar(50) not null,
+    conteudo varchar(300) not null,
+    autor_id int not null,
+    curtidas int default 0,
+    criadaEm timestamp default current_timestamp(),
+    FOREIGN KEY (autor_id) REFERENCES usuarios(id) ON DELETE CASCADE
+);	
