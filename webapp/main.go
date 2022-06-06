@@ -10,6 +10,14 @@ import (
 	"webapp/utils"
 )
 
+//func init() {
+//	hashkey := hex.EncodeToString(securecookie.GenerateRandomKey(16))
+//	fmt.Println(hashkey)
+
+//	blockkey := hex.EncodeToString(securecookie.GenerateRandomKey(16))
+//	fmt.Println(blockkey)
+//}
+
 func main() {
 	config.Carregar()
 	cookies.Configurar()
