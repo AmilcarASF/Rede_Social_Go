@@ -1,4 +1,5 @@
-$('#nova-publicacao').on('submit', criarPublicacao)
+$('#nova-publicacao').on('submit', criarPublicacao);
+$('.curtir-publicacao').on('click', curtirPublicacao);
 
 function criarPublicacao(evento) {
     evento.preventDefault();
@@ -14,4 +15,8 @@ function criarPublicacao(evento) {
     }).fail(function() {
         alert("Erro ao criar Publicação");        
     })
+}
+
+function curtirPublicacao(evento) {
+    alert("curtirPublicacao");   
 }
