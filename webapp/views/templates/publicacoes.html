@@ -10,10 +10,8 @@
   {{ end }}    
 
   {{ define "deletar" }}
-    <a href="/deletar" style="text-decoration: none;">
-      <i class="fas fa-trash text-danger"></i>
-    </a>  
-  {{ end }}  
+  <i class="fas fa-trash text-danger deletar-publicacao" style="cursor: pointer;"></i>
+{{ end }}
 
   {{ define "cabecalho-publicacao" }}
     <h1 class="display-4"> {{ .Titulo }} </h1>
