@@ -10,7 +10,7 @@ import (
 	"webapp/src/requisicoes"
 )
 
-// Usuario representa uma pessoa utiliando a aplicação
+// Usuario representa uma pessoa utilizando a rede social
 type Usuario struct {
 	ID          uint64       `json:"id"`
 	Nome        string       `json:"nome"`
@@ -64,12 +64,12 @@ func BuscarUsuarioCompleto(usuarioID uint64, r *http.Request) (Usuario, error) {
 
 			seguindo = seguindoCarregados
 
-		case publicacoesCarregados := <-canalPublicacoes:
-			if publicacoesCarregados == nil {
-				return Usuario{}, errors.New("Erro ao buscar publicações")
+		case publicacoesCarregadas := <-canalPublicacoes:
+			if publicacoesCarregadas == nil {
+				return Usuario{}, errors.New("Erro ao buscar as publicações")
 			}
 
-			publicacoes = publicacoesCarregados
+			publicacoes = publicacoesCarregadas
 		}
 	}
 
@@ -99,7 +99,7 @@ func BuscarDadosDoUsuario(canal chan<- Usuario, usuarioID uint64, r *http.Reques
 	canal <- usuario
 }
 
-// BuscarSeguidores chama a API para buscar os seguidores
+// BuscarSeguidores chama a API para buscar os seguidores do usuário
 func BuscarSeguidores(canal chan<- []Usuario, usuarioID uint64, r *http.Request) {
 	url := fmt.Sprintf("%s/usuarios/%d/seguidores", config.APIURL, usuarioID)
 	response, erro := requisicoes.FazerRequisicaoComAutenticacao(r, http.MethodGet, url, nil)
@@ -123,7 +123,7 @@ func BuscarSeguidores(canal chan<- []Usuario, usuarioID uint64, r *http.Request)
 	canal <- seguidores
 }
 
-// BuscarSeguindos chama a API para buscar os usuarios seguidos por um usuário
+// BuscarSeguindo chama a API para buscar os usuários seguidos por um usuário
 func BuscarSeguindo(canal chan<- []Usuario, usuarioID uint64, r *http.Request) {
 	url := fmt.Sprintf("%s/usuarios/%d/seguindo", config.APIURL, usuarioID)
 	response, erro := requisicoes.FazerRequisicaoComAutenticacao(r, http.MethodGet, url, nil)
@@ -147,7 +147,7 @@ func BuscarSeguindo(canal chan<- []Usuario, usuarioID uint64, r *http.Request) {
 	canal <- seguindo
 }
 
-// BuscarPublicacoes chama a API para chamar as publicações de um usuário
+// BuscarPublicacoes chama a API para buscar as publicações de um usuário
 func BuscarPublicacoes(canal chan<- []Publicacao, usuarioID uint64, r *http.Request) {
 	url := fmt.Sprintf("%s/usuarios/%d/publicacoes", config.APIURL, usuarioID)
 	response, erro := requisicoes.FazerRequisicaoComAutenticacao(r, http.MethodGet, url, nil)
@@ -165,6 +165,7 @@ func BuscarPublicacoes(canal chan<- []Publicacao, usuarioID uint64, r *http.Requ
 
 	if publicacoes == nil {
 		canal <- make([]Publicacao, 0)
+		return
 	}
 
 	canal <- publicacoes
